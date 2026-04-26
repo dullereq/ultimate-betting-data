@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: Ultimate Betting Static Superbet Data
+  version: 1.0.0
+  description: Static no-paid Superbet football odds warehouse generated outside ChatGPT.
+servers:
+  - url: https://YOUR_USERNAME.github.io/YOUR_REPO
+paths:
+  /latest/manifest.json:
+    get:
+      operationId: getStaticSuperbetManifest
+      summary: Get latest static build metadata and file map.
+      responses:
+        "200":
+          description: Build manifest.
+          content:
+            application/json:
+              schema:
+                type: object
+  /latest/events-index.json:
+    get:
+      operationId: getStaticSuperbetEventsIndex
+      summary: Get all fetched Superbet football fixtures with event IDs and market counts.
+      responses:
+        "200":
+          description: Event index.
+          content:
+            application/json:
+              schema:
+                type: object
+  /latest/main-markets.json:
+    get:
+      operationId: getStaticSuperbetMainMarkets
+      summary: Get compact main-market selections for all fetched fixtures.
+      responses:
+        "200":
+          description: Main markets.
+          content:
+            application/json:
+              schema:
+                type: object
+  /latest/candidates.json:
+    get:
+      operationId: getStaticSuperbetCandidates
+      summary: Get prebuilt main-market candidate queue for GPT research and EV checks.
+      responses:
+        "200":
+          description: Candidate rows.
+          content:
+            application/json:
+              schema:
+                type: object
+  /latest/events/{event_id}.json:
+    get:
+      operationId: getStaticSuperbetEvent
+      summary: Get all active odds and markets for one fetched Superbet fixture.
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Event-level markets and selections.
+          content:
+            application/json:
+              schema:
+                type: object
+  /latest/shards-manifest.json:
+    get:
+      operationId: getStaticSuperbetShardsManifest
+      summary: Get all-selection shard file list.
+      responses:
+        "200":
+          description: Shard manifest.
+          content:
+            application/json:
+              schema:
+                type: object
+  /latest/shards/selections-{shard}.json:
+    get:
+      operationId: getStaticSuperbetSelectionShard
+      summary: Get one shard of flattened active selections.
+      parameters:
+        - name: shard
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "^\\d{3}$"
+      responses:
+        "200":
+          description: Selection shard.
+          content:
+            application/json:
+              schema:
+                type: object
